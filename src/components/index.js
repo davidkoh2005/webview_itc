@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
 
-import swal from 'sweetalert';
-import BlockUi from 'react-block-ui';
-import { Breadcrumb } from 'antd';
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link,
+    useRouteMatch,
+    useParams
+} from "react-router-dom";
 
-import IndexCtrl from './../controllers/index';
-import './index.less';
-import './block-ui.css';
+import AppsComponents from './App'
+// import PaymentForm from './paymentFine/PaymentForm'
+// import NotFoundPage from './NotFoundPage'
 
 export default class IndexComponents extends Component {
     constructor(props) {
@@ -18,17 +23,7 @@ export default class IndexComponents extends Component {
 
     render() {
         return (
-            <div className="container-body">
-                <div className="header-content">
-                    
-                </div>
-                <div className="body-content">
-                    
-                </div>
-                <div className="footer-content">
-
-                </div>
-            </div>
+            <AppsComponents />
         )
     }
 }

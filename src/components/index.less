@@ -1,6 +1,4 @@
-.container-body{
-	@import "~antd/dist/antd.less";
-
+.containers-body {
 	background-color: #F7F7F7;
 	max-width: 420px;
 	left: calc(-50vw + 50%);
@@ -8,17 +6,121 @@
 	margin-left: auto;
 	margin-right: auto;
 
-	.header-content {
-		background-color: #FBB12F;
-		height: 295px;
-		padding-top: 35px;
-	}
-
 	.body-content {
 		padding: 30px 10px 10px 10px;
 		height: calc(100vh - (260px + 50px));
+		.tabs-title {
+			font-size: 10px;
+			text-align: center;
+			color: #6C6D71;
+			height: 30px;
+			border-bottom: 2px solid #D1D1D1;
+			font-weight: bolder;
+			cursor: pointer;
+			&.active {
+				border-bottom: 3px solid #FBB12F;
+			}
+		}
+		.table-order-detail {
+			width: 100%;
+			.label {
+				font-size: 11px;
+				font-weight: normal;
+				font-stretch: normal;
+				font-style: normal;
+				line-height: normal;
+				letter-spacing: 0.31px;
+				color: #6C6D71;
+				width: 50%;
+				height: 40px;
+			}
+			.detail-info {
+				font-size: 13px;
+				font-weight: bold;
+				font-stretch: normal;
+				font-style: normal;
+				line-height: normal;
+				letter-spacing: 0.31px;
+				color: #6C6D71;
+				text-align: left;
+				width: 50%;
+				height: 30px;
+				text-transform: uppercase;
+				// span {
+				// 	font-size: 11px;
+				// }
+			}
+		}
+		.customer-detail {
+			padding: 10px 10px 10px 0px;
+			.title {
+				font-size: 12px;
+				font-weight: 400;
+				margin-bottom: 5px;
+			}
+			.content {
+				font-size: 14px;
+				font-weight: 700;
+				margin-bottom: 10px;
+			}
+			.error-message {
+				font-size: 8px;
+				color: red;
+				font-weight: 700;
+			}
+			.error-message-all {
+				height: 20px;
+				font-family: Montserrat;
+				font-size: 10px;
+				font-weight: 700;
+				font-stretch: normal;
+				font-style: normal;
+				line-height: normal;
+				letter-spacing: 0.26px;
+				color: red;
+			}
+			.label-layout {
+				display: flex;
+				flex-direction: row;
+				justify-content: space-between;
+			}
+			.label-class {
+				font-size: 10px;
+				font-weight: normal;
+				font-stretch: normal;
+				font-style: normal;
+				line-height: normal;
+				letter-spacing: 0.31px;
+				color: #6c6d71;
+				margin-bottom: 0px;
+			}
+			input {
+				border: none;
+				padding: 0;
+				font-size: 14px;
+				font-weight: bold;
+				font-stretch: normal;
+				font-style: normal;
+				line-height: normal;
+				letter-spacing: 0.31px;
+				color: #6c6d71;
+				&.active {
+					border: 0;
+				}
+			}
+			input:focus {
+				border: none;
+				box-shadow: none;
+			}
+			 ::placeholder {
+				color: rgba(108, 109, 113, 0.25);
+			}
+			.form-control:disabled,
+			.form-control[readonly] {
+				background-color: transparent;
+			}
+		}
 	}
-
 	.footer-content {
 		.footer-button {
 			position: absolute;
@@ -56,16 +158,90 @@
 			height: 38px;
 		}
 	}
+ 	.not-found-page{
+        text-align: center;
+        padding-top: calc(50vh - 80.3px);
+		height: 100vh;
+		
+		.not-found-text{
+			font-family: Montserrat;
+			font-size: 21px;
+			font-weight: 600;
+			font-stretch: normal;
+			font-style: normal;
+			line-height: normal;
+			letter-spacing: 0.6px;
+			color: #fbb12f;
+			margin-top: 15px;
+
+			&.back-apps{
+				color: #0b1389 !important;
+			}
+		}
+    }
+}
+
+body {
+	font-family: "Montserrat", sans-serif !important;
+	overflow-x: hidden;
+	background: url("../assets/background.png");
+	// height: 100% !important;
+}
+
+.offline-dialog{
+	&.modal-dialog {
+		max-width: 420px !important;
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: 0;
+		.modal-content {
+			border: none;
+			border-radius: 0px;
+		}
+
+		.text-offline{
+			text-align: center;
+			color: red;
+			font-size: 12px;
+		}
+	}
 }
 
 @media only screen and (min-width: 720px) {
-	.container-body{
+	.containers-body {
 		height: 720px !important;
 		margin-top: calc((100vh - 720px)/2) !important;
 		position: relative;
-		
-		.header-content {
-			padding-top: 0px !important;
+
+		.body-content {
+			height: 410px !important;
+			padding: 30px 10px 60px 10px;
+		}
+
+		.body-bank-payment{
+			height: 420px !important;
+
+			&.with-alert{
+				height: 380px !important;
+			}
+		}
+
+		.scrolling-body{
+			overflow-y: scroll;
+			overflow-x: hidden;
+		}
+
+		.not-found-page{
+			height: 720px !important;
+			padding-top: calc(360px - 80.3px);
+			// padding-top: calc((100vh - 544.4px)/2) !important;
 		}
 	}
+	
+	.offline-dialog{
+		&.modal-dialog {
+			margin-top: calc((100vh - 720px)/2) !important;
+		}
+	}
+
 }
