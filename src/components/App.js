@@ -1,21 +1,21 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import './index.less'
 import Header from './Shared/Header'
-import FooterBank from './Shared/FooterBank'
-import ChoosePayment from './Shared/ChoosePayment'
-import { withRouter } from 'react-router-dom';
 import { Card, CardBody, Row, Col, Input, Form, FormGroup, Label, Modal, ModalBody } from "reactstrap";
 import BlockUi from 'react-block-ui';
 import './block-ui.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
-
+import Dropzone from 'react-dropzone';
 import IndexCtrl from './../controllers/index';
 import swal from 'sweetalert';
 import constant from './../config/constant'
 import NotFoundPage from './NotFoundPage'
 import RedirectPath from './RedirectPath'
 import NumberFormat from 'react-number-format';
+
+import upload_logo from './../assets/upload_logo.png';
+
 
 class AppsComponents extends Component {
     constructor(props) {
@@ -65,17 +65,18 @@ class AppsComponents extends Component {
                 nomorRekening: '',
                 expiredDate: ''
             },
-            paymentMethodList: [],
             selectedTab: 0,
-            choosePayment: false,
-            paymentMethod: null,
             showRekening: false,
             isLoading: false,
             isValidate: true,
             isOnline: true,
             emailBlasting: "",
             isDone: false,
-            urlIframeCC: ''
+            urlIframeCC: '',
+
+            gambar: '',
+            file: [],
+            blopURL: ''
         };
         this.Ctrl = new IndexCtrl(this);
 
@@ -87,14 +88,8 @@ class AppsComponents extends Component {
         const url = window.location.href;
         let pathname = url.split("web/");
         let pathDirect = window.location.pathname
-        let pathParam = window.location.search
 
-        let isRedirectLinkAja = pathParam.includes("https://sandbox-kit.espay.id")
-
-        if (isRedirectLinkAja == true) {
-            this.setState({ isDone: true })
-        }
-        else if (pathDirect == "/backtoapps") {
+        if (pathDirect == "/backtoapps") {
             this.setState({ isDone: true })
         }
         else if (pathname.length == 1) {
@@ -116,8 +111,7 @@ class AppsComponents extends Component {
                 profile.signature = params[1]
 
                 this.setState({ profile }, () => {
-                    this.Ctrl.getValidateWeb()
-                    // this.Ctrl.getData()
+                    this.Ctrl.getData()
                 });
             }
         }
@@ -131,20 +125,6 @@ class AppsComponents extends Component {
 
     redirectFinish = () => {
         window.location.href = "/backtoapps"
-    }
-
-    choosePaymentMethod = (data, id = null) => {
-        let datas = data
-        if (id) {
-            datas['id'] = id
-        }
-        console.log(datas)
-        this.Ctrl.submitChannelMenu(datas)
-    }
-
-
-    submitApiCC = (data) => {
-        this.Ctrl.postApiCreditCard(data)
     }
 
     customerDetailChange = (prop, event) => {
@@ -213,17 +193,52 @@ class AppsComponents extends Component {
             this.setState({ selectedTab: 1, customerDetail })
         }
         else {
-            this.Ctrl.submitFormCustomer()
+            this.Ctrl.postBukti()
         }
     }
 
-    changeEmailBlast = (value) => {
-        this.setState({ emailBlasting: value })
+    handleImage = (event, prop) => {
+        let { gambar, file, blopURL } = this.state
+
+        if (prop.length == 0) {
+            gambar = event[0].name;
+            file = event[0];
+            blopURL = URL.createObjectURL(file)
+
+            this.setState({ gambar, file, blopURL })
+        }
+        else {
+            if (prop[0].errors[0].code == "file-too-large") {
+                swal({
+                    text: "Max File 5MB",
+                    icon: "error",
+                });
+            }
+            else if (prop[0].errors[0].code == "file-invalid-type") {
+                swal({
+                    text: "Invalid File Format",
+                    icon: "error",
+                });
+            }
+        }
     }
 
     render() {
-        let { isDone, customerDetail, totalPrice, merchant, orderDetail, tabsList, selectedTab, choosePayment, paymentMethod, paymentMethodList, isLoading, isValidate, isOnline } = this.state
+        let { isDone, customerDetail, totalPrice, merchant, orderDetail, tabsList, selectedTab, isLoading, isValidate, isOnline, blopURL, gambar, file } = this.state
 
+        let tempPath = blopURL == '' ? upload_logo : blopURL;
+        const changeStyle = {
+            display: 'none'
+        };
+        let dropzoneRef = createRef()
+        const style = {
+            height: 100,
+            width: 100,
+            margin: 20,
+            textAlign: 'center',
+            display: 'inline-block'
+        };
+        console.log(tempPath)
         return (
             <React.Fragment>
                 {isDone == false ? (
@@ -233,9 +248,9 @@ class AppsComponents extends Component {
 
                                 <div className="containers-body">
                                     <div style={{ overflowY: "scroll" }}>
-                                        <Header title="Rincian Belanja" merchant={merchant} totalPrice={totalPrice} />
+                                        <Header title="Rincian Transaksi" merchant={merchant} totalPrice={totalPrice} />
                                         <div className="body-content">
-                                            <Card style={{ borderRadius: 10, marginBottom: 20 }}>
+                                            <Card style={{ borderRadius: 10, marginBottom: 40 }}>
                                                 <CardBody>
                                                     <Row xs={tabsList.length}>
                                                         {tabsList.map((tab, index) => (
@@ -311,6 +326,29 @@ class AppsComponents extends Component {
                                                             </div>
                                                         </React.Fragment>
                                                     )}
+
+                                                    <Dropzone
+                                                        multiple={false}
+                                                        accept='image/jpeg, image/jpg, image/png'
+                                                        onDrop={this.handleImage.bind(this)}
+                                                        name={'Image'}
+                                                        maxSize={5120000}
+                                                        ref={dropzoneRef}>
+                                                        {({ getRootProps, getInputProps }) => (
+                                                            <div {...getRootProps()} className='image-container'>
+                                                                <input {...getInputProps()} />
+                                                                <div className="image-uploader">
+                                                                    <div
+                                                                        className='image-drop'
+                                                                        style={{
+                                                                            backgroundImage: `url('${tempPath || tempPath}')`
+                                                                        }}
+                                                                    ></div>
+                                                                    <div style={blopURL == "" ? {display: "inherit"} : {display: "none"}} className="image-text">Upload your image here</div>
+                                                                </div>
+                                                            </div>
+                                                        )}
+                                                    </Dropzone>
 
                                                 </CardBody>
                                             </Card>

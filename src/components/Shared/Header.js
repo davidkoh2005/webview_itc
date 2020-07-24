@@ -22,7 +22,7 @@ export default class CreditCard extends Component {
                         {title}
                     </div>
                     <div className="image-title">
-                        <img src={logo} alt="korlantas-logo" />
+                        {/* <img src={logo} alt="korlantas-logo" /> */}
                     </div>
                 </div>
                 <div className="price">
@@ -45,7 +45,7 @@ export default class CreditCard extends Component {
                     <table className="table-header-info">
                         <tbody>
                             <tr>
-                                <td className="label">Nama Merchant</td>
+                                <td className="label">Cabang</td>
                                 <td className="detail-info">{merchant.name}</td>
                             </tr>
                             <tr>
