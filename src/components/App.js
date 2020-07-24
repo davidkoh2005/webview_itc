@@ -344,7 +344,7 @@ class AppsComponents extends Component {
                                                                             backgroundImage: `url('${tempPath || tempPath}')`
                                                                         }}
                                                                     ></div>
-                                                                    <div style={blopURL == "" ? {display: "inherit"} : {display: "none"}} className="image-text">Upload your image here</div>
+                                                                    <div style={blopURL == "" ? { display: "inherit" } : { display: "none" }} className="image-text">Upload your image here</div>
                                                                 </div>
                                                             </div>
                                                         )}
@@ -364,7 +364,7 @@ class AppsComponents extends Component {
                                                     type="button"
                                                     onClick={() => this.openPaymentMethod()}
                                                 >
-                                                    PILIH METODE PEMBAYARAN
+                                                    SUBMIT BUKTI PEMBAYARAN
                                                         </button>
                                             </div>
                                         </div>
